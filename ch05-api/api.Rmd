@@ -137,7 +137,7 @@ json <- content(r, as = "text")
 fromJSON(json)
 ```
 
-# How to store your secrets
+## How to store your secrets
 
 There are multiple ways to protect your API key.
 
@@ -325,7 +325,7 @@ r <- GET(
 )
 stop_for_status(r)
 json <- content(r, as = "text")
-fromJSON(json)$businesses %>% select(name)
+fromJSON(json, flatten = TRUE)$businesses %>% select(name)
 ```
 
 
@@ -363,7 +363,7 @@ The Noun Project uses one-legged OAuth protocol to authenticate users.
 
 
 ```{r, out.width = "5%"}
-nouns_app <- oauth_app(
+noun_app <- oauth_app(
   "nounproject",
   key = "ed652bdcd50a4496bbc2253a603b9e9b",
   secret = Sys.getenv("NOUN_SECRET")
@@ -375,12 +375,14 @@ nouns_app <- oauth_app(
 endpoint <- str_glue(
   "https://api.thenounproject.com/icons/{term}", 
   term = "statistics")
-signature <- oauth_signature(endpoint, app = nouns_app)
+signature <- oauth_signature(endpoint, app = noun_app)
 r <- GET(endpoint, oauth_header(signature))
 
 stop_for_status(r)
 json <- content(r, as = "text", encoding = "UTF-8")
+```
 
+```{r, out.width = "5%"}
 icons <- fromJSON(json)$icons %>% pull(preview_url)
 knitr::include_graphics(icons[1:10])
 ```
@@ -408,6 +410,7 @@ twitter_token <- oauth2.0_token(
   client_credentials = TRUE
 )
 ```
+
 
 
 ```{r}
@@ -438,7 +441,7 @@ get_trends <- function(woeid) {
 }
 
 woeid <- get_woeid("Sacramento", "United States")
-get_trends(woeid) %>% select(name)
+get_trends(woeid) %>% arrange(tweet_volume) %>%  select(name)
 ```
 
 
@@ -450,9 +453,8 @@ An API key of google cannot be used to access personal data on google, we will p
 gooogle_app <- oauth_app(
   "google",
   key = "948497930689-3qkgfe81jmb52i1aotg8vivgrhfuo2ir.apps.googleusercontent.com",
-  secret = Sys.getenv("GOOGLE_SECRET")
+  secret = "bwSg6wfpqrzBT5HtWE8xvWxU"  # the secret is three legged OAUTH is not really a secret
 )
-
 ```
 
 In OAuth, developer needs to specify that information they need from the user
