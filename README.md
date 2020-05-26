@@ -39,6 +39,7 @@
 | 05-12               | [shinydb](https://github.com/ucdavis-sta141b-sq-2020/shinydb) |                                                                                                          |
 | 05-14, 05-19        | [api](ch05-api/api.Rmd)                                       | [api](https://ucdavis-sta141b-sq-2020.github.io/sta141b-notes/ch05-api/api.html)                         |
 | 05-21               | [webscraping](ch06-webscraping/webscraping.Rmd)               | [webscraping](https://ucdavis-sta141b-sq-2020.github.io/sta141b-notes/ch06-webscraping/webscraping.html) |
+| 05-26               | [regex](ch07-regex/regex.Rmd)                                 | [regex](https://ucdavis-sta141b-sq-2020.github.io/sta141b-notes/ch07-regex/regex.html)                   |
 
 ## Links
 
