@@ -122,12 +122,20 @@ shawshank_url <- html %>%
   html_attr("href")
 ```
 
+Alternatively, we could the CSS pseudo class `contains()`
+
+```{r}
+shawshank_url <- html %>%
+  html_node('td.titleColumn a:contains("The Shawshank Redemption")') %>%
+  html_attr("href")
+```
+
 But it is not the complete url, we need to base url.
 ```{r}
 shawshank_full_url <- paste0("https://www.imdb.com/", shawshank_url)
 ```
 
-Then we could futher scrape things from `shawshank_full_url`.
+Then we could further scrape things from `shawshank_full_url`.
 
 
 
@@ -147,14 +155,11 @@ read_html("https://stackoverflow.com/questions/tagged/r") %>%
 ```
 
 
-# Scrapping dynamic webpages
+# Scraping dynamic webpages
 
-`rvest` is only able to scrape static web pages. https://stats.nba.com/ is one of such websites that are not static.
+`rvest` is only able to scrape static web pages. If you want to scrape dynamic web pages, you will need to control a browser programatically.
 
-PS: actually nba.com has a undocumented API, see https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation
-
-If you want to scrape dynamic web pages, you will need to control a browser programatically.
-
+PS: Please note that dynamic scraping is not suitable to be used in shiny application.
 
 
 ## UC Davis class search
@@ -218,7 +223,8 @@ server$stop()
 
 ## NBA site
 
-PS: NBA has AN unofficial API.
+PS: actually nba.com has a undocumented API, see https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation
+
 
 ```{r}
 port <- httpuv::randomPort()

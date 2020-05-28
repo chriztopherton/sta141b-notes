@@ -388,7 +388,7 @@ summary {
 <li><a href="#imdb-example">imdb example</a></li>
 <li><a href="#stackoverflow-example">Stackoverflow example</a></li>
 </ul></li>
-<li><a href="#scrapping-dynamic-webpages">Scrapping dynamic webpages</a>
+<li><a href="#scraping-dynamic-webpages">Scraping dynamic webpages</a>
 <ul>
 <li><a href="#uc-davis-class-search">UC Davis class search</a></li>
 <li><a href="#nba-site">NBA site</a></li>
@@ -399,13 +399,13 @@ summary {
 
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.3.0     ✔ purrr   0.3.4
-## ✔ tibble  3.0.1     ✔ dplyr   0.8.5
-## ✔ tidyr   1.0.2     ✔ stringr 1.4.0
-## ✔ readr   1.3.1     ✔ forcats 0.5.0</code></pre>
+<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
+## ✓ tibble  3.0.1     ✓ dplyr   0.8.5
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(rvest)</code></pre>
 <pre><code>## Loading required package: xml2</code></pre>
 <pre><code>## 
@@ -519,9 +519,13 @@ head(movie_names)</code></pre>
   html_node(&quot;a&quot;) %&gt;%
   keep(html_text(.) == &quot;The Shawshank Redemption&quot;) %&gt;%
   html_attr(&quot;href&quot;)</code></pre>
+<p>Alternatively, we could the CSS pseudo class <code>contains()</code></p>
+<pre class="r"><code>shawshank_url &lt;- html %&gt;%
+  html_node(&#39;td.titleColumn a:contains(&quot;The Shawshank Redemption&quot;)&#39;) %&gt;%
+  html_attr(&quot;href&quot;)</code></pre>
 <p>But it is not the complete url, we need to base url.</p>
 <pre class="r"><code>shawshank_full_url &lt;- paste0(&quot;https://www.imdb.com/&quot;, shawshank_url)</code></pre>
-<p>Then we could futher scrape things from <code>shawshank_full_url</code>.</p>
+<p>Then we could further scrape things from <code>shawshank_full_url</code>.</p>
 </div>
 <div id="stackoverflow-example" class="section level2">
 <h2>Stackoverflow example</h2>
@@ -533,28 +537,27 @@ head(movie_names)</code></pre>
   html_nodes(&quot;h3&quot;) %&gt;%
   html_nodes(&quot;a&quot;) %&gt;%
   html_text()</code></pre>
-<pre><code>##  [1] &quot;R: sub_group counter which resets by one of two grouping variables&quot;                         
-##  [2] &quot;How to input a range of values for a constraint in R&quot;                                       
-##  [3] &quot;Selecting Date Range from Column in R&quot;                                                      
-##  [4] &quot;how do I use the predict(lm()) function to only get my beta 1&quot;                              
-##  [5] &quot;R - How to create an ascending/descending number line around a specific element in a vector&quot;
-##  [6] &quot;How long before quanteda runs with R 4.0.0? [closed]&quot;                                       
-##  [7] &quot;HOW to make a time series smooth using kalman filters in R Studio&quot;                          
-##  [8] &quot;Detecting duplicate entries&quot;                                                                
-##  [9] &quot;Coalescing multiple columns using multiple conditions&quot;                                      
-## [10] &quot;Calculate prices from arithmetic returns/ log returns&quot;                                      
-## [11] &quot;Where to put test data in R package for R CMD CHECK&quot;                                        
-## [12] &quot;Swap columns of Multiple files [closed]&quot;                                                    
-## [13] &quot;lazy-load database &#39;C:/RPackages/Weibull/pillar/R/pillar.rdb&#39; is corrupt&quot;                   
-## [14] &quot;Is there a way to simplify this code using a loop?&quot;                                         
-## [15] &quot;Dataframe in R Studio&quot;</code></pre>
+<pre><code>##  [1] &quot;How to web scrape with rvest CSS content which contains a “_ngcontent-c1” tag?&quot;                                         
+##  [2] &quot;R calculation based on the previous results step by step by group&quot;                                                      
+##  [3] &quot;Dataframe with large number of columns&quot;                                                                                 
+##  [4] &quot;How to Utilize “Date” Variable with R&quot;                                                                                  
+##  [5] &quot;How to count one column and adding up several columns at the same time using summarise in dplyr R&quot;                      
+##  [6] &quot;Add margins to multi-way tables in R&quot;                                                                                   
+##  [7] &quot;Calculate part of duration that occur in each hour of day&quot;                                                              
+##  [8] &quot;how to understand the regression coefficients and make prediction for cases with specific predictor values in MCMCglmm?&quot;
+##  [9] &quot;Fill and Color Legend Disappear while Adding Layers&quot;                                                                    
+## [10] &quot;R - manipulating shapefiles from within R&quot;                                                                              
+## [11] &quot;Remove first place comma and space between two texts and the last comma or space&quot;                                       
+## [12] &quot;travis build failing with “ERROR: compilation failed for package ‘metaBMA&#39; ”&quot;                                           
+## [13] &quot;R: sub_group counter which resets by one of two grouping variables [duplicate]&quot;                                         
+## [14] &quot;How to input a range of values for a constraint in R&quot;                                                                   
+## [15] &quot;Selecting Date Range from Column in R&quot;</code></pre>
 </div>
 </div>
-<div id="scrapping-dynamic-webpages" class="section level1">
-<h1>Scrapping dynamic webpages</h1>
-<p><code>rvest</code> is only able to scrape static web pages. <a href="https://stats.nba.com/" class="uri">https://stats.nba.com/</a> is one of such websites that are not static.</p>
-<p>PS: actually nba.com has a undocumented API, see <a href="https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation" class="uri">https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation</a></p>
-<p>If you want to scrape dynamic web pages, you will need to control a browser programatically.</p>
+<div id="scraping-dynamic-webpages" class="section level1">
+<h1>Scraping dynamic webpages</h1>
+<p><code>rvest</code> is only able to scrape static web pages. If you want to scrape dynamic web pages, you will need to control a browser programatically.</p>
+<p>PS: Please note that dynamic scraping is not suitable to be used in shiny application.</p>
 <div id="uc-davis-class-search" class="section level2">
 <h2>UC Davis class search</h2>
 <pre class="r"><code>library(RSelenium)
@@ -640,8 +643,8 @@ rd$findElement(
 ## 18 B04 \n                         0
 ## 19  B05 \n                        4
 ## 20  B05 \n                        4
-## 21 B06 \n                        12
-## 22 B06 \n                        12
+## 21 B06 \n                        11
+## 22 B06 \n                        11
 ## 23 B07 \n                        10
 ## 24 B07 \n                        10
 ## 25 B08 \n                         0
@@ -704,7 +707,7 @@ server$stop()</code></pre>
 </div>
 <div id="nba-site" class="section level2">
 <h2>NBA site</h2>
-<p>PS: NBA has AN unofficial API.</p>
+<p>PS: actually nba.com has a undocumented API, see <a href="https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation" class="uri">https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation</a></p>
 <pre class="r"><code>port &lt;- httpuv::randomPort()
 server &lt;- wdman::chrome(port = port, version = &quot;83.0.4103.14&quot;, verbose = FALSE)
 rd &lt;- remoteDriver(port = port)</code></pre>
