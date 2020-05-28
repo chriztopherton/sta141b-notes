@@ -15,7 +15,7 @@ library(tidyverse)
 
 A regular expression, `regex` or `regexp` is a sequence of characters that define a search pattern. 
 
-There exists any versions of regular expressions. `stringr` of tidyverse follows the [ICU standard](http://userguide.icu-project.org/strings/regexp) while base R follows the [PCRE](https://www.pcre.org/) standard. See [Comparison of regular-expression engines](https://en.wikipedia.org/wiki/Comparison_of_regular-expression_engines)
+There exists many versions of regular expressions. `stringr` of tidyverse follows the [ICU standard](http://userguide.icu-project.org/strings/regexp) while base R follows the [PCRE](https://www.pcre.org/) standard. See [Comparison of regular-expression engines](https://en.wikipedia.org/wiki/Comparison_of_regular-expression_engines)
 
 
 We again prefer the tidyverse packages over base functions. 
@@ -50,7 +50,7 @@ We will use `https://regex101.com/` to illustrate the following. (Choose the Pyt
   Examples:
   - `a.c` matches "aac", "abc" and so on.
 
-- Anchors - `^` matches the beginning of a string and `$` matches the end of a string
+- Anchors - `^` matches the beginning of a string (line if multiline mode) `$` matches the end of a string (line if multiline mode)
   
   Examples:
   - `^abc` matches "abc" but not "cabc"
@@ -65,7 +65,6 @@ We will use `https://regex101.com/` to illustrate the following. (Choose the Pyt
     from "a" to "z".
     - `[a-zA-Z0-9]` matches all alphanumerics
     - `[\[\]]` matches `[` or `]`
-    - `[\]` matches `\` ??
   
 - Bracket expression `[^...]` matches a single character that is not contained within the brackets
     
@@ -98,6 +97,7 @@ We will use `https://regex101.com/` to illustrate the following. (Choose the Pyt
   
   
 ## Escaping characters
+
 
 In R, these two characters need to be specially treated in double quotes.
 
@@ -242,7 +242,6 @@ fruits <- c("one apple", "two pears", "three bananas")
 str_match_all(fruits, "([aeiou])")
 str_replace_all(fruits, "([aeiou])", "[\\1]")
 ```
-
 
 ```{r}
 strings <- c(
@@ -427,7 +426,7 @@ str_extract(strings, "a.{2,}c")
 str_extract(strings, "a.{2,}?c")
 ```
 
-- [skip] Possessive quantifier (does not backtrack)
+- Possessive quantifier (does not backtrack)
 
   |quantifier||
   |----|----|

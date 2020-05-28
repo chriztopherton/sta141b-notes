@@ -392,20 +392,20 @@ summary {
 <ul>
 <li><a href="#uc-davis-class-search">UC Davis class search</a></li>
 <li><a href="#nba-site">NBA site</a></li>
-<li><a href="#headless-browser">Headless browser</a></li>
+<li><a href="#advanced-topics">Advanced topics</a></li>
 </ul></li>
 </ul>
 </div>
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
-## ✓ tibble  3.0.1     ✓ dplyr   0.8.5
-## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.0     ✔ purrr   0.3.4
+## ✔ tibble  3.0.1     ✔ dplyr   0.8.5
+## ✔ tidyr   1.0.2     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(rvest)</code></pre>
 <pre><code>## Loading required package: xml2</code></pre>
 <pre><code>## 
@@ -533,21 +533,21 @@ head(movie_names)</code></pre>
   html_nodes(&quot;h3&quot;) %&gt;%
   html_nodes(&quot;a&quot;) %&gt;%
   html_text()</code></pre>
-<pre><code>##  [1] &quot;rbindlist in R - only keep columns that have a match&quot;                                 
-##  [2] &quot;scale function in plotly&quot;                                                             
-##  [3] &quot;How to get the original name of a object when sending a list of objects to a function&quot;
-##  [4] &quot;GPS seconds of week to UTC time in R&quot;                                                 
-##  [5] &quot;R cannot read Python Pandas dataframe saved in feather format&quot;                        
-##  [6] &quot;Use rvest to read xml data contained in a .txt file&quot;                                  
-##  [7] &quot;R fill in data value based on data range and variable combinations&quot;                   
-##  [8] &quot;How can I make a loop skip over inputs that generate warnings?&quot;                       
-##  [9] &quot;Translating SAS language to R language: Creating a new variable&quot;                      
-## [10] &quot;Importing columns from .csv as a “character” type instead of integer in R&quot;            
-## [11] &quot;R - accessing dataframe column names passed as strings in function argument&quot;          
-## [12] &quot;Creating a new column in my data frame based on a function&quot;                           
-## [13] &quot;Filter data frame by specific values R&quot;                                               
-## [14] &quot;R Error in registerNames and/or the namespace for package is locked&quot;                  
-## [15] &quot;How can I create a panel layout with grouped plots?&quot;</code></pre>
+<pre><code>##  [1] &quot;R: sub_group counter which resets by one of two grouping variables&quot;                         
+##  [2] &quot;How to input a range of values for a constraint in R&quot;                                       
+##  [3] &quot;Selecting Date Range from Column in R&quot;                                                      
+##  [4] &quot;how do I use the predict(lm()) function to only get my beta 1&quot;                              
+##  [5] &quot;R - How to create an ascending/descending number line around a specific element in a vector&quot;
+##  [6] &quot;How long before quanteda runs with R 4.0.0? [closed]&quot;                                       
+##  [7] &quot;HOW to make a time series smooth using kalman filters in R Studio&quot;                          
+##  [8] &quot;Detecting duplicate entries&quot;                                                                
+##  [9] &quot;Coalescing multiple columns using multiple conditions&quot;                                      
+## [10] &quot;Calculate prices from arithmetic returns/ log returns&quot;                                      
+## [11] &quot;Where to put test data in R package for R CMD CHECK&quot;                                        
+## [12] &quot;Swap columns of Multiple files [closed]&quot;                                                    
+## [13] &quot;lazy-load database &#39;C:/RPackages/Weibull/pillar/R/pillar.rdb&#39; is corrupt&quot;                   
+## [14] &quot;Is there a way to simplify this code using a loop?&quot;                                         
+## [15] &quot;Dataframe in R Studio&quot;</code></pre>
 </div>
 </div>
 <div id="scrapping-dynamic-webpages" class="section level1">
@@ -564,7 +564,7 @@ requireNamespace(&quot;httpuv&quot;)</code></pre>
 <pre class="r"><code>port &lt;- httpuv::randomPort()
 # find a version of chromedriver that is compatible with your chrome
 # binman::list_versions(&quot;chromedriver&quot;)
-server &lt;- wdman::chrome(port = port, version = &quot;83.0.4103.14&quot;, verbose = FALSE)
+server &lt;- wdman::chrome(port = port, version = &quot;83.0.4103.39&quot;, verbose = FALSE)
 rd &lt;- remoteDriver(port = port)</code></pre>
 <pre class="r"><code>rd$open(silent = TRUE)
 # check if there is any error messages
@@ -573,7 +573,10 @@ stopifnot(is.null(rd$sessionInfo$message))
 rd$navigate(&quot;https://registrar-apps.ucdavis.edu/courses/search/index.cfm&quot;)</code></pre>
 <pre class="r"><code>rd$findElement(&quot;css&quot;, &quot;#course_number&quot;)$clickElement()
 rd$sendKeysToActiveElement(list(&quot;STA&quot;))
-rd$findElement(&quot;css&quot;, &#39;#home_tablez_bz input[name=&quot;search&quot;]&#39;)$clickElement()</code></pre>
+rd$findElement(
+    &quot;css&quot;, 
+    &#39;#home_tablez_bz input[name=&quot;search&quot;]&#39;
+  )$clickElement()</code></pre>
 <pre class="r"><code>retry::retry({
   rd$getPageSource()[[1]] %&gt;% 
     read_html() %&gt;% 
@@ -582,40 +585,40 @@ rd$findElement(&quot;css&quot;, &#39;#home_tablez_bz input[name=&quot;search&quo
       df &lt;- slice(., -(1:4))
       names(df) &lt;- slice(., 4)
       df
-    }
+    } %&gt;% 
+    separate(&quot;CRN Time/Days&quot;, c(&quot;CRN&quot;, &quot;Time/Days&quot;), &quot;\n\\s+\t&quot;)
   },
   when = &quot;xml_missing&quot;,
   timeout = 5
 )</code></pre>
-<pre><code>##                                      CRN Time/Days    Course Location
-## 1      51183 \n                \t3:10 - 4:00 PM, R   STA 010OLSON 205
-## 2  51183 \n                \t11:00 - 11:50 AM, MWF   STA 010OLSON 223
-## 3    51186 \n                \t8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
-## 4      51186 \n                \t8:00 - 8:50 AM, T   STA 013HART 1130
-## 5    51187 \n                \t8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
-## 6      51187 \n                \t9:00 - 9:50 AM, T   STA 013OLSON 158
-## 7    51188 \n                \t8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
-## 8    51188 \n                \t10:00 - 10:50 AM, T    STA 013WELLMN 1
-## 9    51189 \n                \t8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
-## 10   51189 \n                \t11:00 - 11:50 AM, T  STA 013WELLMN 212
-## 11     51190 \n                \t8:00 - 8:50 AM, R   STA 013HART 1130
-## 12   51190 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 13     51191 \n                \t9:00 - 9:50 AM, R   STA 013OLSON 118
-## 14   51191 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 15   51192 \n                \t10:00 - 10:50 AM, R    STA 013WELLMN 1
-## 16   51192 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 17   51193 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 18   51193 \n                \t11:00 - 11:50 AM, R   STA 013OLSON 106
-## 19   51194 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 20    51194 \n                \t12:10 - 1:00 PM, R STA 013WALKER 1320
-## 21   51195 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 22     51195 \n                \t1:10 - 2:00 PM, R  STA 013WELLMN 212
-## 23   51196 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 24    51196 \n                \t12:10 - 1:00 PM, R    STA 013WELLMN 1
-## 25   51197 \n                \t9:00 - 9:50 AM, MWF    STA 013ROCK 194
-## 26     51197 \n                \t3:10 - 4:00 PM, R   STA 013HART 1150
-## 27     51198 \n                \t8:00 - 8:50 AM, T  STA 013WELLMN 115
-## 28   51198 \n                \t4:10 - 5:00 PM, MWF    STA 013ROCK 194
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 16 rows [48, 50,
+## 154, 156, 158, 160, 162, 166, 168, 170, 172, 176, 178, 180, 182, 186].</code></pre>
+<pre><code>##       CRN             Time/Days    Course Location
+## 1  51183      3:10 - 4:00 PM, R   STA 010OLSON 205
+## 2  51183  11:00 - 11:50 AM, MWF   STA 010OLSON 223
+## 3  51186    8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
+## 4  51186      8:00 - 8:50 AM, T   STA 013HART 1130
+## 5  51187    8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
+## 6  51187      9:00 - 9:50 AM, T   STA 013OLSON 158
+## 7  51188    8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
+## 8  51188    10:00 - 10:50 AM, T    STA 013WELLMN 1
+## 9  51189    8:00 - 8:50 AM, MWF    STA 013KLEIBR 3
+## 10 51189    11:00 - 11:50 AM, T  STA 013WELLMN 212
+## 11 51190      8:00 - 8:50 AM, R   STA 013HART 1130
+## 12 51190    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 13 51191      9:00 - 9:50 AM, R   STA 013OLSON 118
+## 14 51191    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 15 51192    10:00 - 10:50 AM, R    STA 013WELLMN 1
+## 16 51192    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 17 51193    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 18 51193    11:00 - 11:50 AM, R   STA 013OLSON 106
+## 19 51194    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 20 51194     12:10 - 1:00 PM, R STA 013WALKER 1320
+## 21 51195    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 22 51195      1:10 - 2:00 PM, R  STA 013WELLMN 212
+## 23 51196    9:00 - 9:50 AM, MWF    STA 013ROCK 194
+## 24 51196     12:10 - 1:00 PM, R    STA 013WELLMN 1
+## 25 51197    9:00 - 9:50 AM, MWF    STA 013ROCK 194
 ##                   Sec. Seats Avail.
 ## 1  001 \n                        25
 ## 2  001 \n                        25
@@ -623,28 +626,25 @@ rd$findElement(&quot;css&quot;, &#39;#home_tablez_bz input[name=&quot;search&quo
 ## 4  A01 \n                         0
 ## 5  A02 \n                        13
 ## 6  A02 \n                        13
-## 7  A03 \n                        25
-## 8  A03 \n                        25
+## 7  A03 \n                        23
+## 8  A03 \n                        23
 ## 9  A04 \n                        21
 ## 10 A04 \n                        21
-## 11 B01 \n                        14
-## 12 B01 \n                        14
+## 11 B01 \n                        12
+## 12 B01 \n                        12
 ## 13 B02 \n                         0
 ## 14 B02 \n                         0
 ## 15 B03 \n                         0
 ## 16 B03 \n                         0
 ## 17 B04 \n                         0
 ## 18 B04 \n                         0
-## 19  B05 \n                        7
-## 20  B05 \n                        7
-## 21 B06 \n                        10
-## 22 B06 \n                        10
+## 19  B05 \n                        4
+## 20  B05 \n                        4
+## 21 B06 \n                        12
+## 22 B06 \n                        12
 ## 23 B07 \n                        10
 ## 24 B07 \n                        10
 ## 25 B08 \n                         0
-## 26 B08 \n                         0
-## 27 C01 \n                        35
-## 28 C01 \n                        35
 ##                                                                                        Title Former GE Credit • New GE Credit
 ## 1  Statistical Thinking\n                            SE SS W\n                            \n                         •  QL SE
 ## 2  Statistical Thinking\n                            SE SS W\n                            \n                         •  QL SE
@@ -671,9 +671,6 @@ rd$findElement(&quot;css&quot;, &#39;#home_tablez_bz input[name=&quot;search&quo
 ## 23    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
 ## 24    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
 ## 25    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
-## 26    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
-## 27    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
-## 28    Elementary Statistics\n                            SE \n                            \n                         •  QL SE
 ##                               Instructor Course Units    Detail Save
 ## 1  The Staff\n                        \n\t\t\t\t\t4.0 view51183  [+]
 ## 2  The Staff\n                        \n\t\t\t\t\t4.0 view51183  [+]
@@ -700,24 +697,21 @@ rd$findElement(&quot;css&quot;, &#39;#home_tablez_bz input[name=&quot;search&quo
 ## 23 The Staff\n                        \n\t\t\t\t\t4.0 view51196  [+]
 ## 24 The Staff\n                        \n\t\t\t\t\t4.0 view51196  [+]
 ## 25 The Staff\n                        \n\t\t\t\t\t4.0 view51197  [+]
-## 26 The Staff\n                        \n\t\t\t\t\t4.0 view51197  [+]
-## 27 The Staff\n                        \n\t\t\t\t\t4.0 view51198  [+]
-## 28 The Staff\n                        \n\t\t\t\t\t4.0 view51198  [+]
-##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 158 rows ]</code></pre>
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 161 rows ]</code></pre>
 <pre class="r"><code># close the browser finally
 server$stop()</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="nba-site" class="section level2">
 <h2>NBA site</h2>
+<p>PS: NBA has AN unofficial API.</p>
 <pre class="r"><code>port &lt;- httpuv::randomPort()
 server &lt;- wdman::chrome(port = port, version = &quot;83.0.4103.14&quot;, verbose = FALSE)
 rd &lt;- remoteDriver(port = port)</code></pre>
 <pre class="r"><code>rd$open(silent = TRUE)
 rd$navigate(&quot;https://stats.nba.com/leaders/?SeasonType=Regular%20Season&quot;)</code></pre>
 <pre class="r"><code>retry::retry({
-  rd$getPageSource() %&gt;%
-    str_flatten() %&gt;%
+  rd$getPageSource()[[1]] %&gt;%
     read_html() %&gt;%
     html_node(&quot;div.nba-stat-table__overflow table&quot;) %&gt;%
     html_table()
@@ -749,12 +743,13 @@ rd$navigate(&quot;https://stats.nba.com/leaders/?SeasonType=Regular%20Season&quo
 <p>loop over the table by clicking the next button</p>
 <pre class="r"><code>leader &lt;- NULL
 for (i in 1:6) {
-  leader &lt;- rd$getPageSource() %&gt;%
-    str_flatten() %&gt;%
-    read_html() %&gt;%
-    html_node(&quot;div.nba-stat-table__overflow table&quot;) %&gt;%
-    html_table() %&gt;%
-    bind_rows(leader, .)
+  leader &lt;- bind_rows(
+    leader,
+    rd$getPageSource()[[1]] %&gt;%
+      read_html() %&gt;%
+      html_node(&quot;div.nba-stat-table__overflow table&quot;) %&gt;%
+      html_table()
+  )
   nextbutton &lt;- rd$findElement(&quot;css&quot;, &quot;a.stats-table-pagination__next&quot;)
   nextbutton$clickElement()
 }</code></pre>
@@ -784,8 +779,12 @@ for (i in 1:6) {
 server$stop()</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="headless-browser" class="section level2">
-<h2>Headless browser</h2>
+<div id="advanced-topics" class="section level2">
+<h2>Advanced topics</h2>
+<ul>
+<li>Headless browser</li>
+<li>XPaths</li>
+</ul>
 </div>
 </div>
 

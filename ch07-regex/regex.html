@@ -406,20 +406,20 @@ summary {
 </div>
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
-## ✓ tibble  3.0.1     ✓ dplyr   0.8.5
-## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.0     ✔ purrr   0.3.4
+## ✔ tibble  3.0.1     ✔ dplyr   0.8.5
+## ✔ tidyr   1.0.2     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="regular-expression" class="section level1">
 <h1>Regular Expression</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>A regular expression, <code>regex</code> or <code>regexp</code> is a sequence of characters that define a search pattern.</p>
-<p>There exists any versions of regular expressions. <code>stringr</code> of tidyverse follows the <a href="http://userguide.icu-project.org/strings/regexp">ICU standard</a> while base R follows the <a href="https://www.pcre.org/">PCRE</a> standard. See <a href="https://en.wikipedia.org/wiki/Comparison_of_regular-expression_engines">Comparison of regular-expression engines</a></p>
+<p>There exists many versions of regular expressions. <code>stringr</code> of tidyverse follows the <a href="http://userguide.icu-project.org/strings/regexp">ICU standard</a> while base R follows the <a href="https://www.pcre.org/">PCRE</a> standard. See <a href="https://en.wikipedia.org/wiki/Comparison_of_regular-expression_engines">Comparison of regular-expression engines</a></p>
 <p>We again prefer the tidyverse packages over base functions.</p>
 </div>
 <div id="basic-concepts" class="section level2">
@@ -474,7 +474,7 @@ summary {
 <ul>
 <li><code>a.c</code> matches “aac”, “abc” and so on.</li>
 </ul></li>
-<li><p>Anchors - <code>^</code> matches the beginning of a string and <code>$</code> matches the end of a string</p>
+<li><p>Anchors - <code>^</code> matches the beginning of a string (line if multiline mode) <code>$</code> matches the end of a string (line if multiline mode)</p>
 <p>Examples:</p>
 <ul>
 <li><code>^abc</code> matches “abc” but not “cabc”</li>
@@ -488,7 +488,6 @@ summary {
 <li><code>[a-z]</code> specifies a range which matches any lowercase letter from “a” to “z”.</li>
 <li><code>[a-zA-Z0-9]</code> matches all alphanumerics</li>
 <li><code>[\[\]]</code> matches <code>[</code> or <code>]</code></li>
-<li><code>[\]</code> matches <code>\</code> ??</li>
 </ul></li>
 <li><p>Bracket expression <code>[^...]</code> matches a single character that is not contained within the brackets</p>
 <p>Examples:</p>
@@ -989,7 +988,7 @@ str_extract(strings, &quot;a.{2,}c&quot;)</code></pre>
 <pre class="r"><code>str_extract(strings, &quot;a.{2,}?c&quot;)</code></pre>
 <pre><code>## [1] &quot;acbc&quot;</code></pre>
 <ul>
-<li><p>[skip] Possessive quantifier (does not backtrack)</p>
+<li><p>Possessive quantifier (does not backtrack)</p>
 <table>
 <thead>
 <tr class="header">

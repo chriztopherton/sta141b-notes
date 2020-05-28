@@ -171,7 +171,7 @@ requireNamespace("httpuv")
 port <- httpuv::randomPort()
 # find a version of chromedriver that is compatible with your chrome
 # binman::list_versions("chromedriver")
-server <- wdman::chrome(port = port, version = "83.0.4103.14", verbose = FALSE)
+server <- wdman::chrome(port = port, version = "83.0.4103.39", verbose = FALSE)
 rd <- remoteDriver(port = port)
 ```
 
@@ -187,7 +187,10 @@ rd$navigate("https://registrar-apps.ucdavis.edu/courses/search/index.cfm")
 ```{r}
 rd$findElement("css", "#course_number")$clickElement()
 rd$sendKeysToActiveElement(list("STA"))
-rd$findElement("css", '#home_tablez_bz input[name="search"]')$clickElement()
+rd$findElement(
+    "css", 
+    '#home_tablez_bz input[name="search"]'
+  )$clickElement()
 ```
 
 
@@ -200,7 +203,8 @@ retry::retry({
       df <- slice(., -(1:4))
       names(df) <- slice(., 4)
       df
-    }
+    } %>% 
+    separate("CRN Time/Days", c("CRN", "Time/Days"), "\n\\s+\t")
   },
   when = "xml_missing",
   timeout = 5
@@ -213,6 +217,8 @@ server$stop()
 ```
 
 ## NBA site
+
+PS: NBA has AN unofficial API.
 
 ```{r}
 port <- httpuv::randomPort()
@@ -227,8 +233,7 @@ rd$navigate("https://stats.nba.com/leaders/?SeasonType=Regular%20Season")
 
 ```{r}
 retry::retry({
-  rd$getPageSource() %>%
-    str_flatten() %>%
+  rd$getPageSource()[[1]] %>%
     read_html() %>%
     html_node("div.nba-stat-table__overflow table") %>%
     html_table()
@@ -242,12 +247,13 @@ loop over the table by clicking the next button
 ```{r}
 leader <- NULL
 for (i in 1:6) {
-  leader <- rd$getPageSource() %>%
-    str_flatten() %>%
-    read_html() %>%
-    html_node("div.nba-stat-table__overflow table") %>%
-    html_table() %>%
-    bind_rows(leader, .)
+  leader <- bind_rows(
+    leader,
+    rd$getPageSource()[[1]] %>%
+      read_html() %>%
+      html_node("div.nba-stat-table__overflow table") %>%
+      html_table()
+  )
   nextbutton <- rd$findElement("css", "a.stats-table-pagination__next")
   nextbutton$clickElement()
 }
@@ -262,7 +268,8 @@ leader
 server$stop()
 ```
 
+## Advanced topics
 
-
-## Headless browser
+- Headless browser
+- XPaths
 
