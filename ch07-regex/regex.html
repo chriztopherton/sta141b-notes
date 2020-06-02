@@ -386,7 +386,7 @@ summary {
 <li><a href="#basic-concepts">Basic concepts</a></li>
 <li><a href="#escaping-characters">Escaping characters</a></li>
 </ul></li>
-<li><a href="#package-stringr">Package <code>stringr</code></a>
+<li><a href="#package-stringr-tidyverse">Package <code>stringr</code> (tidyverse)</a>
 <ul>
 <li><a href="#manage-strings">Manage Strings</a></li>
 <li><a href="#detect-matches">Detect Matches</a></li>
@@ -408,7 +408,7 @@ summary {
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.0     ✔ purrr   0.3.4
-## ✔ tibble  3.0.1     ✔ dplyr   0.8.5
+## ✔ tibble  3.0.1     ✔ dplyr   1.0.0
 ## ✔ tidyr   1.0.2     ✔ stringr 1.4.0
 ## ✔ readr   1.3.1     ✔ forcats 0.5.0</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -506,10 +506,20 @@ summary {
 <li><code>&quot;\\&quot;</code> means a single backslash</li>
 <li><code>&quot;\&quot;&quot;</code> means a double quote</li>
 </ul>
+<p>Similarly, for single quotes - <code>&#39;\\&#39;</code> means a single backslash - <code>&#39;\&#39;&#39;</code> means a single quote</p>
+<p>For R 4.0 above,</p>
+<ul>
+<li><code>r&quot;(regex)&quot;</code></li>
+<li><code>r&#39;(regex)&#39;</code></li>
+<li><code>R&quot;(regex)&quot;</code></li>
+<li><code>R&#39;(regex)&#39;</code></li>
+<li><code>r&quot;--(regex)--&quot;</code></li>
+<li><code>R&quot;--(regex)--&quot;</code></li>
+</ul>
 </div>
 </div>
-<div id="package-stringr" class="section level1">
-<h1>Package <code>stringr</code></h1>
+<div id="package-stringr-tidyverse" class="section level1">
+<h1>Package <code>stringr</code> (tidyverse)</h1>
 <div id="manage-strings" class="section level2">
 <h2>Manage Strings</h2>
 <pre class="r"><code>fruit &lt;- c(&quot;apple&quot;, &quot;banana&quot;, &quot;pear&quot;, &quot;pinapple&quot;)
@@ -551,19 +561,20 @@ str_detect(fruit, &quot;^p&quot;, negate = TRUE)</code></pre>
 # count the number of matches
 str_count(fruit, &quot;p&quot;)</code></pre>
 <pre><code>## [1] 2 0 1 3</code></pre>
-<pre class="r"><code>str_count(fruit, &quot;p{1,}&quot;)</code></pre>
+<pre class="r"><code>str_count(fruit, &quot;p+&quot;)</code></pre>
 <pre><code>## [1] 1 0 1 2</code></pre>
 <pre class="r"><code># get locations
-str_locate(fruit, &quot;a&quot;)</code></pre>
+str_locate(fruit, &quot;[aeiou]+&quot;)</code></pre>
 <pre><code>##      start end
 ## [1,]     1   1
 ## [2,]     2   2
-## [3,]     3   3
-## [4,]     4   4</code></pre>
-<pre class="r"><code>str_locate_all(fruit, &quot;a&quot;)</code></pre>
+## [3,]     2   3
+## [4,]     2   2</code></pre>
+<pre class="r"><code>str_locate_all(fruit, &quot;[aeiou]+&quot;)</code></pre>
 <pre><code>## [[1]]
 ##      start end
 ## [1,]     1   1
+## [2,]     5   5
 ## 
 ## [[2]]
 ##      start end
@@ -573,11 +584,13 @@ str_locate(fruit, &quot;a&quot;)</code></pre>
 ## 
 ## [[3]]
 ##      start end
-## [1,]     3   3
+## [1,]     2   3
 ## 
 ## [[4]]
 ##      start end
-## [1,]     4   4</code></pre>
+## [1,]     2   2
+## [2,]     4   4
+## [3,]     8   8</code></pre>
 <pre class="r"><code># The pattern variable can also be vectorized
 str_locate_all(fruit, c(&quot;a&quot;, &quot;b&quot;, &quot;p&quot;, &quot;p&quot;))</code></pre>
 <pre><code>## [[1]]
@@ -607,12 +620,13 @@ str_sub(fruit, 1, 3)</code></pre>
 <pre class="r"><code>str_sub(fruit, -3, -2)</code></pre>
 <pre><code>## [1] &quot;pl&quot; &quot;an&quot; &quot;ea&quot; &quot;pl&quot;</code></pre>
 <pre class="r"><code># only select the elements that match
-str_subset(fruit, &quot;a&quot;)</code></pre>
-<pre><code>## [1] &quot;apple&quot;    &quot;banana&quot;   &quot;pear&quot;     &quot;pinapple&quot;</code></pre>
-<pre class="r"><code># indexs that have matches
-str_which(fruit, &quot;^a&quot;)</code></pre>
-<pre><code>## [1] 1</code></pre>
+str_subset(fruit, &quot;p{2,}&quot;)</code></pre>
+<pre><code>## [1] &quot;apple&quot;    &quot;pinapple&quot;</code></pre>
+<pre class="r"><code># indexes that have matches
+str_which(fruit, &quot;b|r&quot;)</code></pre>
+<pre><code>## [1] 2 3</code></pre>
 <pre class="r"><code>shopping_list &lt;- c(&quot;apples x4&quot;, &quot;bag of flour&quot;, &quot;bag of sugar&quot;, &quot;milk x2&quot;)
+
 # numbers
 str_extract(shopping_list, &quot;\\d&quot;)</code></pre>
 <pre><code>## [1] &quot;4&quot; NA  NA  &quot;2&quot;</code></pre>
@@ -739,32 +753,25 @@ str_replace_all(fruits, &quot;[aeiou]&quot;, &quot;&quot;)</code></pre>
 <pre><code>## [1] &quot;n ppl&quot;    &quot;tw prs&quot;   &quot;thr bnns&quot;</code></pre>
 <pre class="r"><code>str_remove_all(fruits, &quot;[aeiou]&quot;)</code></pre>
 <pre><code>## [1] &quot;n ppl&quot;    &quot;tw prs&quot;   &quot;thr bnns&quot;</code></pre>
-<p>References of the form <code>\1</code>, <code>\2</code>, etc will be replaced with the contents of the respective matched group</p>
-<pre class="r"><code>fruits &lt;- c(&quot;one apple&quot;, &quot;two pears&quot;, &quot;three bananas&quot;)
-str_match_all(fruits, &quot;([aeiou])&quot;)</code></pre>
+<p>References of the form <code>\0</code> (the full match), <code>\1</code>, <code>\2</code>, etc will be replaced with the contents of the respective matched group</p>
+<pre class="r"><code>fruits &lt;- c(&quot;one apple&quot;, &quot;two pears&quot;, &quot;three bananas three pineapples&quot;)
+str_match_all(fruits, &quot;(\\w+) (\\w+)&quot;)</code></pre>
 <pre><code>## [[1]]
-##      [,1] [,2]
-## [1,] &quot;o&quot;  &quot;o&quot; 
-## [2,] &quot;e&quot;  &quot;e&quot; 
-## [3,] &quot;a&quot;  &quot;a&quot; 
-## [4,] &quot;e&quot;  &quot;e&quot; 
+##      [,1]        [,2]  [,3]   
+## [1,] &quot;one apple&quot; &quot;one&quot; &quot;apple&quot;
 ## 
 ## [[2]]
-##      [,1] [,2]
-## [1,] &quot;o&quot;  &quot;o&quot; 
-## [2,] &quot;e&quot;  &quot;e&quot; 
-## [3,] &quot;a&quot;  &quot;a&quot; 
+##      [,1]        [,2]  [,3]   
+## [1,] &quot;two pears&quot; &quot;two&quot; &quot;pears&quot;
 ## 
 ## [[3]]
-##      [,1] [,2]
-## [1,] &quot;e&quot;  &quot;e&quot; 
-## [2,] &quot;e&quot;  &quot;e&quot; 
-## [3,] &quot;a&quot;  &quot;a&quot; 
-## [4,] &quot;a&quot;  &quot;a&quot; 
-## [5,] &quot;a&quot;  &quot;a&quot;</code></pre>
-<pre class="r"><code>str_replace_all(fruits, &quot;([aeiou])&quot;, &quot;[\\1]&quot;)</code></pre>
-<pre><code>## [1] &quot;[o]n[e] [a]ppl[e]&quot;       &quot;tw[o] p[e][a]rs&quot;        
-## [3] &quot;thr[e][e] b[a]n[a]n[a]s&quot;</code></pre>
+##      [,1]               [,2]    [,3]        
+## [1,] &quot;three bananas&quot;    &quot;three&quot; &quot;bananas&quot;   
+## [2,] &quot;three pineapples&quot; &quot;three&quot; &quot;pineapples&quot;</code></pre>
+<pre class="r"><code>str_replace_all(fruits, &quot;(\\w+) (\\w+)&quot;, &quot;\\1 \\1 \\2&quot;)</code></pre>
+<pre><code>## [1] &quot;one one apple&quot;                             
+## [2] &quot;two two pears&quot;                             
+## [3] &quot;three three bananas three three pineapples&quot;</code></pre>
 <pre class="r"><code>strings &lt;- c(
   &quot;Work: 219 733 8965&quot;,
   &quot;Mobile: 579-499-7527&quot;,
@@ -857,6 +864,7 @@ str_glue(&quot;{name} is {age}&quot;, name = &quot;Anna&quot;, age = 43)</code><
   group_by(cyl) %&gt;%
   summarize(m = mean(mpg)) %&gt;%
   str_glue_data(&quot;A {cyl}-cylinder car has an average mpg of {round(m, 2)}.&quot;)</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre><code>## A 4-cylinder car has an average mpg of 26.66.
 ## A 6-cylinder car has an average mpg of 19.74.
 ## A 8-cylinder car has an average mpg of 15.1.</code></pre>
